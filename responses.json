@@ -1,0 +1,78 @@
+{
+  "greetings": [
+    "Hello Selvarasan!",
+    "Hi there!",
+    "Hey! How can I assist you?",
+    "Greetings!",
+    "Good day!",
+    "Hi, what can I do for you?",
+    "Howdy!",
+    "Hey there, how are you?",
+    "Hello! How may I help you today?",
+    "Hi! What's up?"
+  ],
+  "farewell": [
+    "Goodbye!",
+    "See you later!",
+    "Take care Selvarasan!",
+    "Farewell!",
+    "Until next time!",
+    "Bye for now!",
+    "Catch you later!",
+    "Have a great day!",
+    "Goodbye! Take care!",
+    "Adios!",
+    "So long!"
+  ],
+  "thanks": [
+    "Thank you!",
+    "Thanks a lot!",
+    "Thanks a bunch!",
+    "Appreciate it!",
+    "Thanks so much!",
+    "Thank you very much!",
+    "Thanks for your help!",
+    "I'm grateful, thanks!",
+    "Thanks a million!",
+    "Thanks for everything!",
+    "Thank you kindly!"
+  ],
+  "you're welcome": [
+    "You're welcome!",
+    "No problem!",
+    "It was my pleasure!",
+    "Anytime!",
+    "Glad to help!",
+    "Don't mention it!",
+    "Happy to assist!",
+    "You got it!",
+    "Sure thing!",
+    "Of course!",
+    "Always here to help!"
+  ],
+  "about": [
+    "I am a simple MEC Personal Chatbot created using Python!",
+    "I'm a MEC Personal Chatbot designed to assist you with various tasks.",
+    "I'm just a humble MEC Personal Chatbot here to help you out!",
+    "I am an AI-powered MEC Personal Chatbot programmed to assist you.",
+    "I'm here to answer your questions and provide assistance.",
+    "I'm a virtual assistant programmed to respond to your queries.",
+    "I'm your friendly MEC Personal Chatbot ready to lend a hand!",
+    "I'm an artificial intelligence designed to interact with users like you!",
+    "I'm a digital assistant programmed to make your life easier.",
+    "I am a MEC Personal MEC Personal Chatbot powered by AI to help you with your inquiries.",
+    "I'm a virtual helper designed to make your day a bit smoother."
+  ],
+  "fallback": [
+    "Sorry, I didn't get that. Can you please rephrase?",
+    "I'm not sure I understand. Could you provide more details?",
+    "Apologies, I didn't catch that. Can you repeat?",
+    "Hmm, I'm having trouble understanding. Could you try again?",
+    "I'm afraid I didn't comprehend that. Can you try a different wording?",
+    "I didn't quite catch that. Can you please clarify?",
+    "I'm sorry, I couldn't understand what you said. Can you try saying it differently?",
+    "It seems like I didn't get that. Can you provide more context?",
+    "I'm having difficulty understanding. Can you please elaborate?",
+    "I'm sorry, I'm not sure what you're asking. Can you try rephrasing?"
+  ]
+}
