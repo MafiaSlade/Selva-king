@@ -3,194 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEC Chatbot</title>
+    <title>Thirukkural Chatbot</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: grey;
+            background-color: #f7f7f7;
         }
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
+            position: relative;
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
-            border-radius: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            color: #333;
-            overflow: hidden; /* Clear floats */
-        }
-        .container img {
-            width: 350px; /* Adjust image width */
-            height: auto; /* Maintain aspect ratio */
-            float: left; /* Float the image to the left */
-            margin-right: 20px; /* Add some space between the image and the text */
+            background-color: #fff;
         }
         h1 {
+            text-align: center;
             color: #333;
-            margin: 0; /* Remove default margin from heading */
-            line-height: 50px; /* Adjust line height for vertical alignment */
-        }
-        #chatbox {
-            text-align: left;
-            height: 300px;
-            overflow-y: scroll;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 20px; /* Move the chatbox down */
-            margin-bottom: 20px;
         }
         p {
-            margin: 5px 0;
+            text-align: center;
+            color: #555;
         }
-        input[type="text"],
-        input[type="password"],
-        button {
-            width: calc(100% - 40px);
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+        input[type="number"] {
+            text-align: start;
             padding: 10px;
-            border-radius: 5px;
             border: 1px solid #ccc;
-            margin-bottom: 10px;
-            box-sizing: border-box;
+            border-radius: 4px;
+        }
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        #kuralDetails {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f2f2f2;
+        }
+        #speechButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #speechButton:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="main-logo.png" alt="Chatbot Image"> <!-- Replace with your image file -->
-        <h1>MEC Chatbot</h1>
-    </div>
-    <!-- <div class="container">
-        <h2>Sign In</h2>
-        <form id="loginForm">
-            <label for="username">Username:</label><br>
-            <input type="text" id="username" name="username"><br>
-            <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password"><br><br>
-            <button type="button" onclick="signIn()">Sign In</button>
+        <h1>Thirukkural Chatbot</h1>
+        <p>Enter the number of the Thirukkural to get its details:</p>
+        <form id="kuralForm">
+            <input type="number" id="kuralNumber" name="number" min="1" max="1330" required>
+            <button type="submit">Get Kural</button>
         </form>
-    </div> -->
-
-    <div class="container">
-        <div id="chatbox"></div>
-        <input type="text" id="userInput" placeholder="Type your message here..." onkeydown="if(event.keyCode == 13) sendMessage()">
+        <div id="kuralDetails"></div>
     </div>
+
+    <button id="speechButton">Speak</button>
 
     <script>
-        function signIn() {
-            // Implement sign-in functionality
-            // This can remain the same as before
-            // Example: Send sign-in data to server and redirect if successful
-        }
-
-        function sendMessage() {
-            var message = document.getElementById('userInput').value;
-            document.getElementById('chatbox').innerHTML += '<p>You: ' + message + '</p>';
-            document.getElementById('userInput').value = '';
-
-            // Make AJAX call to Flask server
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/chatbot', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function() {
-                if (xhr.status == 200) {
-                    var response = JSON.parse(xhr.responseText).response;
-                    document.getElementById('chatbox').innerHTML += '<p>Chatbot: ' + response + '</p>';
-                    document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
+        document.getElementById('kuralForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let kuralNumber = document.getElementById('kuralNumber').value;
+            fetch('/get_kural', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'number=' + kuralNumber
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('kuralDetails').innerHTML = `<p>${data.error}</p>`;
+                } else {
+                    document.getElementById('kuralDetails').innerHTML = `<p><strong>Kural Number:</strong> ${data.number}</p>
+                                                                        <p>${data.line1}</p>
+                                                                        <p>${data.line2}</p>
+                                                                        <p><strong>Translation:</strong> ${data.translation}</p>`;
                 }
-            };
-            xhr.send(JSON.stringify({'message': message}));
-        }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        // Speech Assistance
+        document.getElementById('speechButton').addEventListener('click', function() {
+            let translation = document.querySelector('#kuralDetails p:last-child').textContent;
+            if ('speechSynthesis' in window) {
+                let speech = new SpeechSynthesisUtterance(translation);
+                speech.lang = 'ta-IN'; // Set the language to Tamil
+                window.speechSynthesis.speak(speech);
+            } else {
+                alert('Speech synthesis is not supported in your browser.');
+            }
+        });
     </script>
 </body>
 </html>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEC Chatbot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: grey;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            color: #333;
-            overflow: hidden; /* Clear floats */
-        }
-        .container img {
-            width: auto; /* Adjust image width */
-            height: 50px; /* Maintain aspect ratio */
-            float: left; /* Float the image to the left */
-            margin-right: 20px; /* Add some space between the image and the text */
-        }
-        h1 {
-            color: #333;
-            margin: 0; /* Remove default margin from heading */
-            line-height: 50px; /* Adjust line height for vertical alignment */
-        }
-        #chatbox {
-            text-align: left;
-            height: 300px;
-            overflow-y: scroll;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 20px; /* Move the chatbox down */
-            margin-bottom: 20px;
-        }
-        p {
-            margin: 5px 0;
-        }
-        input[type="text"] {
-            width: calc(100% - 140px);
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <img src="main-logo.png" alt="Chatbot Image">  Replace with your image file -->
-        <!-- <h1>MEC Chatbot</h1>
-    </div>
-    <div class="container">
-        <div id="chatbox"></div>
-        <input type="text" id="userInput" placeholder="Type your message here..." onkeydown="if(event.keyCode == 13) sendMessage()">
-    </div>
-
-    <script>
-        function sendMessage() {
-            var message = document.getElementById('userInput').value;
-            document.getElementById('chatbox').innerHTML += '<p>You: ' + message + '</p>';
-            document.getElementById('userInput').value = '';
-
-            // Make AJAX call to Flask server
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/chatbot', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function() {
-                if (xhr.status == 200) {
-                    var response = JSON.parse(xhr.responseText).response;
-                    document.getElementById('chatbox').innerHTML += '<p>Chatbot: ' + response + '</p>';
-                    document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
-                }
-            };
-            xhr.send(JSON.stringify({'message': message}));
-        }
-    </script>
-</body>
-</html> --> 
